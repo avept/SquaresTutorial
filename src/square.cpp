@@ -35,7 +35,7 @@ bool FigureOperations::intersect(const Square& sq1, const Square& sq2)
     auto [sq2_diag1, sq2_diag2] = sq2.getDiagonalPoints();
 
     // Direct containment check (identical squares)
-    if (sq1.m_point == sq2.m_point)
+    if ((sq1.m_point == sq2.m_point) && (sq1.m_length == sq2.m_length))
         return true;
 
     return sq1.isDiagonalIntersecting(sq2.m_point, sq2_diag1) ||

@@ -102,3 +102,46 @@ TEST(SquareIntersectionTest, PrecisionTest) {
     Square sq2({1000003, 1000003}, 3);
     EXPECT_TRUE(FigureOperations::intersect(sq1, sq2)); // Should still intersect despite large values
 }
+
+// 11.1 Test: Advanced overlapping
+TEST(SquareIntersectionTest, AdvancedOverlapping) {
+    Square mainSquare({5, 5}, 5);
+
+    Square sq1({5, 5}, 3);
+    Square sq2({8, 7}, 3);
+    Square sq3({6, 2}, 3);
+
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq1));
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq2)); // Should this case be passed?
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq3)); // Should this case be passed?
+}
+
+// 12.1 Test: Two points of intersection at corner
+TEST(SquareIntersectionTest, TwoIntersectionPointsAtCorner) {
+    Square mainSquare({5, 5}, 5);
+
+    Square sq1({4, 4}, 3);
+    Square sq2({8, 4}, 3);
+    Square sq3({8, 8}, 3);
+    Square sq4({7, 8}, 3);
+
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq1));
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq2)); 
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq3)); 
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq4)); 
+}
+
+// 13.1 Test: Two points of intersection at side
+TEST(SquareIntersectionTest, TwoIntersectionPointsAtSide) {
+    Square mainSquare({5, 5}, 5);
+
+    Square sq1({5, 7}, 2);
+    Square sq2({6, 4}, 2);
+    Square sq3({9, 7}, 2);
+    Square sq4({6, 9}, 2);
+
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq1));
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq2)); 
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq3)); 
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq4)); 
+}
