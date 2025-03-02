@@ -2,8 +2,6 @@
 
 This project provides a **Bazel-based C++ implementation** for detecting **square intersections**, along with a **Dockerized environment** for easy building and testing.
 
----
-
 ### **Build the Docker Image**
 To build the project inside a **Docker container**, run the following command:
 ```sh
