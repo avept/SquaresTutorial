@@ -4,6 +4,7 @@ cc_test (
         "square_intersection_tests.cpp",
     ],
     deps = [
-        "@com_google_googletest//:gtest"
+        "@com_google_googletest//:gtest_main",
+        "//src:square_intersection"
     ],
 )

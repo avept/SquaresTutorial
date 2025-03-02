@@ -16,6 +16,5 @@ ENV BAZEL_OPTS="--enable_workspace=true"
 COPY . .
 
 RUN bazel build $BAZEL_OPTS //...
-RUN bazel test $BAZEL_OPTS //... --test_output=all
 
-CMD ["bazel", "run", "--enable_workspace=true", "//tests:square_intersection_tests"]
+CMD ["bazel", "run", "--enable_workspace=true", "//tests:square_intersection_tests", "--test_output=all"]
