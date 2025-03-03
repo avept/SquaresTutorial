@@ -15,5 +15,5 @@ The build process is defined in the Dockerfile.
 
 Once the build is complete, run the executable inside Docker:
 ```sh
-docker run --rm squares_intersection
+docker run -v $(pwd)/bazel-cache:/home/myuser/squares/.cache/bazel -it --entrypoint /bin/bash squares_intersection
 ```
