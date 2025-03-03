@@ -13,7 +13,12 @@ WORKDIR /app
 
 ENV BAZEL_OPTS="--enable_workspace=true"
 
+# not sure if this is the best way to do it
 COPY . .
+
+# TODO: move to volumes
+
+# TODO: add 1000:1000 user in order not to run as root
 
 RUN bazel build $BAZEL_OPTS //...
 

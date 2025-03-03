@@ -6,7 +6,12 @@
 class Square 
 {
 public:
-    using Point = std::pair<int64_t, int64_t>;
+    struct Point
+    {
+        Point(int64_t x, int64_t y) : x(x), y(y) {}
+        int64_t x;
+        int64_t y;
+    };
 
 public:
     Square(const Point& point, const uint64_t length);

@@ -74,8 +74,8 @@ TEST(SquareIntersectionTest, NoIntersectionAround) {
 
     for (const auto& sq : surroundingSquares) {
         EXPECT_FALSE(FigureOperations::intersect(center, sq)) 
-            << "Failed for square at (" << sq.m_point.first 
-            << ", " << sq.m_point.second << ")";
+            << "Failed for square at (" << sq.m_point.x 
+            << ", " << sq.m_point.y << ")";
     }
 }
 
