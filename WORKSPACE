@@ -6,8 +6,8 @@ http_archive(
     strip_prefix = "googletest-1.14.0",
 )
 
-new_local_repository(
-    name = "linux_opencv",
-    build_file = "@//:opencv_linux.BUILD",
-    path = "/usr",
-)
+# new_local_repository(
+#     name = "linux_opencv",
+#     build_file = "@//:opencv_linux.BUILD",
+#     path = "/usr",
+# )

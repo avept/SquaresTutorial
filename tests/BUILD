@@ -9,10 +9,7 @@ opencv_lib = [
     "-l:libopencv_imgproc.so",
     "-l:libopencv_video.so",
     "-l:libopencv_videoio.so",
-    "-l:libopencv_cudaimgproc.so",
     "-l:libopencv_imgcodecs.so",
-    "-l:libopencv_tracking.so",
-    "-l:libopencv_calib3d.so",
 ]
 
 LINKOPT = lib_paths + opencv_lib 
@@ -22,6 +19,8 @@ cc_test (
     srcs = [
         "square_intersection_tests.cpp",
     ],
+    copts = ["-I/usr/include/opencv4"],
+
     linkopts = LINKOPT,
     deps = [
         "@com_google_googletest//:gtest_main",
