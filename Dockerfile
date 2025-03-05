@@ -9,26 +9,17 @@ RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel
     && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
     && apt update && apt install -y bazel
 
-RUN groupadd -g 1000 myuser && \
-    useradd -m -u 1000 -g 1000 -s /bin/bash myuser
+RUN groupadd -g 1000 user && \
+    useradd -m -u 1000 -g 1000 -s /bin/bash user
 
-USER myuser
-
-RUN mkdir -p /home/myuser/squares
-
-WORKDIR /home/myuser/squares
-
+ENV USER_DIR=/home/user
+ENV REPOSITORY_DIR=/workspaces/SquareTutorial
 ENV BAZEL_OPTS="--enable_workspace=true --noenable_bzlmod"
-ENV BAZEL_CACHE_DIR=/home/myuser/squares/.cache/bazel
+ENV BAZEL_CACHE_DIR=$REPOSITORY_DIR/.cache/bazel
 
-RUN mkdir -p $BAZEL_CACHE_DIR
+RUN mkdir -p $REPOSITORY_DIR && \
+    chown -R user:user $REPOSITORY_DIR
 
-# Squares_intersect project
-COPY src /home/myuser/squares/src
-COPY tests /home/myuser/squares/tests
-COPY WORKSPACE /home/myuser/squares/WORKSPACE
-COPY README.md /home/myuser/squares/README.md
+USER user
 
-RUN bazel build $BAZEL_OPTS //...
-
-CMD ["bazel", "run", "--enable_workspace=true", "//tests:square_intersection_tests", "--test_output=all"]
+WORKDIR $REPOSITORY_DIR
