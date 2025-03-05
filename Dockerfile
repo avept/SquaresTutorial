@@ -1,7 +1,23 @@
 FROM ubuntu:22.04
 
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt update && apt install -y \
-    curl gnupg git unzip zip build-essential python3 python3-distutils \
+    curl \ 
+    gnupg \
+    git \
+    unzip \ 
+    zip \
+    build-essential \
+    python3 \
+    python3-distutils \
+    pkg-config \
+    libopencv-core-dev \
+    libopencv-highgui-dev \
+    libopencv-calib3d-dev \
+    libopencv-features2d-dev \
+    libopencv-imgproc-dev \
+    libopencv-video-dev \
     && rm -rf /var/lib/apt/lists/*
 
 RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg \
@@ -14,6 +30,7 @@ RUN groupadd -g 1000 user && \
 
 ENV USER_DIR=/home/user
 ENV REPOSITORY_DIR=/workspaces/SquareTutorial
+
 ENV BAZEL_OPTS="--enable_workspace=true --noenable_bzlmod"
 ENV BAZEL_CACHE_DIR=$REPOSITORY_DIR/.cache/bazel
 

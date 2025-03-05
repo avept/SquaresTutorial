@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <utility>
 
+#include <opencv2/core.hpp>
+
 class Square 
 {
 public:
