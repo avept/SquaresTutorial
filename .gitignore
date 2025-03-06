@@ -1,2 +1,5 @@
 bazel-*
 *.bazel
+MODUle.bazel*
+*.html
+*.xml

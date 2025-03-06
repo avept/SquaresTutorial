@@ -3,6 +3,7 @@ FROM ubuntu:22.04
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt install -y \
+    wget \
     curl \ 
     gnupg \
     git \
@@ -10,6 +11,7 @@ RUN apt update && apt install -y \
     zip \
     build-essential \
     python3 \
+    python3-pip \
     python3-distutils \
     pkg-config \
     libopencv-core-dev \
@@ -24,6 +26,8 @@ RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel
     && mv bazel.gpg /etc/apt/trusted.gpg.d/ \
     && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
     && apt update && apt install -y bazel
+
+RUN pip install --no-cache-dir robotframework robotframework-requests
 
 RUN groupadd -g 1000 user && \
     useradd -m -u 1000 -g 1000 -s /bin/bash user
@@ -40,3 +44,5 @@ RUN mkdir -p $REPOSITORY_DIR && \
 USER user
 
 WORKDIR $REPOSITORY_DIR
+
+VOLUME [$REPOSITORY_DIR]
