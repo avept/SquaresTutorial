@@ -107,7 +107,7 @@ TEST(SquareIntersectionTest, AdvancedOverlapping) {
 
     Square sq1({5, 5}, 3);
     Square sq2({7, 7}, 3);
-    Square sq3({7, 2}, 3);
+    Square sq3({7, 3}, 3);
 
     EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq1));
     EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq2)); 
