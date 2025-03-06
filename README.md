@@ -15,7 +15,7 @@ The build process is defined in the Dockerfile.
 
 Once the build is complete, run the executable inside Docker:
 ```sh
-docker run -v /workspaces/SquareTutorial:/workspaces/SquareTutorial -it --entrypoint /bin/bash squares_intersection
+docker run -v /workspaces/SquaresTutorial:/workspaces/SquaresTutorial -it --entrypoint /bin/bash squares_intersection
 ```
 
 ## **Build and run the project**

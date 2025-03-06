@@ -33,7 +33,7 @@ RUN groupadd -g 1000 user && \
     useradd -m -u 1000 -g 1000 -s /bin/bash user
 
 ENV USER_DIR=/home/user
-ENV REPOSITORY_DIR=/workspaces/SquareTutorial
+ENV REPOSITORY_DIR=/workspaces/SquaresTutorial
 
 ENV BAZEL_OPTS="--enable_workspace=true --noenable_bzlmod"
 ENV BAZEL_CACHE_DIR=$REPOSITORY_DIR/.cache/bazel
