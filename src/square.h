@@ -1,29 +1,24 @@
 #pragma once
 
-#include <cstdint>
-#include <utility>
+#include <opencv2/core.hpp>
 
 class Square 
 {
 public:
-    using Point = std::pair<int64_t, int64_t>;
+    Square(const cv::Point& topLeft, int length);
 
-public:
-    Square(const Point& point, const uint64_t length);
+    bool contains(const cv::Point& p) const;
+    bool isDiagonalIntersecting(const cv::Point& p1, const cv::Point& p2) const;
 
-    bool contains(const Point& p) const;
-    bool isDiagonalIntersecting(const Point& p1, const Point& p2) const;
+    std::pair<cv::Point, cv::Point> getDiagonalPoints() const;
 
-    std::pair<Point, Point> getDiagonalPoints() const;
+    const cv::Rect& getRect() const { return m_rect; }
 
-public:
-    Point m_point; // Top-left point
-    uint64_t m_length; // Side length of the square
+private:
+    cv::Rect m_rect; // Rectangle representing the square
 };
 
 namespace FigureOperations
 {
-    // Check if two squares intersect
     bool intersect(const Square& sq1, const Square& sq2);
 }
-
