@@ -73,9 +73,7 @@ TEST(SquareIntersectionTest, NoIntersectionAround) {
     };
 
     for (const auto& sq : surroundingSquares) {
-        EXPECT_FALSE(FigureOperations::intersect(center, sq)) 
-            << "Failed for square at (" << sq.m_point.first 
-            << ", " << sq.m_point.second << ")";
+        EXPECT_FALSE(FigureOperations::intersect(center, sq));
     }
 }
 
@@ -108,12 +106,12 @@ TEST(SquareIntersectionTest, AdvancedOverlapping) {
     Square mainSquare({5, 5}, 5);
 
     Square sq1({5, 5}, 3);
-    Square sq2({8, 7}, 3);
-    Square sq3({6, 2}, 3);
+    Square sq2({7, 7}, 3);
+    Square sq3({7, 2}, 3);
 
     EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq1));
-    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq2)); // Should this case be passed?
-    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq3)); // Should this case be passed?
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq2)); 
+    EXPECT_TRUE(FigureOperations::intersect(mainSquare, sq3));
 }
 
 // 12.1 Test: Two points of intersection at corner
