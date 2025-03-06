@@ -8,12 +8,25 @@ To build the project inside a **Docker container**, run the following command:
 docker build -t squares_intersection .
 ```
 
-This will install dependencies, fetch Bazel packages, and compile the project inside a container.
+This will install dependencies, fetch Bazel packages.
 The build process is defined in the Dockerfile.
 
-### **Run the Program**
+### **Run the container**
 
 Once the build is complete, run the executable inside Docker:
 ```sh
-docker run --rm squares_intersection
+docker run -v /workspaces/SquareTutorial:/workspaces/SquareTutorial -it --entrypoint /bin/bash squares_intersection
+```
+
+## **Build and run the project**
+
+Once we are inside the container, we can build the project itself:
+```sh
+bazel build --enable_workspace=true //...
+```
+
+and run:
+
+```sh
+bazel run --enable_workspace=true //tests:square_intersection_tests 
 ```
