@@ -1,6 +1,7 @@
 FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
+ARG BAZEL_VERSION=6.3.2
 
 RUN apt update && apt install -y \
     wget \
@@ -22,7 +23,6 @@ RUN apt update && apt install -y \
     libopencv-video-dev \
     && rm -rf /var/lib/apt/lists/*
 
-ARG BAZEL_VERSION=6.3.2
 RUN wget -q https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-linux-x86_64 \
     && chmod +x bazel-${BAZEL_VERSION}-linux-x86_64 \
     && mv bazel-${BAZEL_VERSION}-linux-x86_64 /usr/local/bin/bazel
@@ -33,13 +33,15 @@ RUN groupadd -g 1000 user && \
     useradd -m -u 1000 -g 1000 -s /bin/bash user
 
 ENV USER_DIR=/home/user
+ENV WORKSPACE_DIR=/workspaces
 ENV REPOSITORY_DIR=/workspaces/SquaresTutorial
 
-ENV BAZEL_OPTS="--enable_workspace=true --noenable_bzlmod"
-ENV BAZEL_CACHE_DIR=$REPOSITORY_DIR/.cache/bazel
+ENV BAZEL_CACHE_DIR=$WORKSPACE_DIR/.cache
 
 RUN mkdir -p $REPOSITORY_DIR && \
-    chown -R user:user $REPOSITORY_DIR
+    mkdir -p $BAZEL_CACHE_DIR && \
+    chown -R user:user $REPOSITORY_DIR && \
+    chown -R user:user $BAZEL_CACHE_DIR
 
 USER user
 

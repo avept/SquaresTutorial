@@ -23,6 +23,6 @@ cc_test (
     linkopts = LINKOPT,
     deps = [
         "@com_google_googletest//:gtest_main",
-        "//src:square_intersection"
+        "//src:square_intersection_lib"
     ],
-)
+)   

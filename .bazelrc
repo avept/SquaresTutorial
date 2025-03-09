@@ -3,3 +3,5 @@ build --jobs=auto
 build --verbose_failures
 build --cxxopt='-std=c++20'
 build --host_cxxopt='-std=c++20'
+
+startup --output_user_root=/workspaces/.cache
