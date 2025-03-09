@@ -22,10 +22,10 @@ RUN apt update && apt install -y \
     libopencv-video-dev \
     && rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL https://bazel.build/bazel-release.pub.gpg | gpg --dearmor > bazel.gpg \
-    && mv bazel.gpg /etc/apt/trusted.gpg.d/ \
-    && echo "deb [arch=amd64] https://storage.googleapis.com/bazel-apt stable jdk1.8" | tee /etc/apt/sources.list.d/bazel.list \
-    && apt update && apt install -y bazel
+ARG BAZEL_VERSION=6.3.2
+RUN wget -q https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-linux-x86_64 \
+    && chmod +x bazel-${BAZEL_VERSION}-linux-x86_64 \
+    && mv bazel-${BAZEL_VERSION}-linux-x86_64 /usr/local/bin/bazel
 
 RUN pip install --no-cache-dir robotframework robotframework-requests
 

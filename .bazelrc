@@ -1,5 +1,5 @@
 build --color=yes
 build --jobs=auto
 build --verbose_failures
-
-build --enable_workspace=true
+build --cxxopt='-std=c++20'
+build --host_cxxopt='-std=c++20'
