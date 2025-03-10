@@ -35,7 +35,6 @@ RUN groupadd -g 1000 user && \
 ENV USER_DIR=/home/user
 ENV WORKSPACE_DIR=/workspaces
 ENV REPOSITORY_DIR=/workspaces/SquaresTutorial
-
 ENV BAZEL_CACHE_DIR=$WORKSPACE_DIR/.cache
 
 RUN mkdir -p $REPOSITORY_DIR && \
@@ -48,3 +47,4 @@ USER user
 WORKDIR $REPOSITORY_DIR
 
 VOLUME [$REPOSITORY_DIR]
+VOLUME [$BAZEL_CACHE_DIR]
