@@ -29,17 +29,19 @@ RUN wget -q https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSIO
 
 RUN pip install --no-cache-dir robotframework robotframework-requests
 
-RUN groupadd -g 1000 user && \
-    useradd -m -u 1000 -g 1000 -s /bin/bash user
+ENV GROUPID=1001
+ENV USERID=1001
+
+RUN groupadd -g $GROUPID user && \
+    useradd -m -u $USERID -g $GROUPID -s /bin/bash user
 
 ENV USER_DIR=/home/user
 ENV WORKSPACE_DIR=/workspaces
 ENV REPOSITORY_DIR=/workspaces/SquaresTutorial
-
 ENV BAZEL_CACHE_DIR=$WORKSPACE_DIR/.cache
 
-RUN mkdir -p $REPOSITORY_DIR && \
-    mkdir -p $BAZEL_CACHE_DIR && \
+RUN mkdir -m a=rwx -p $REPOSITORY_DIR && \
+    mkdir -m a=rwx -p $BAZEL_CACHE_DIR && \
     chown -R user:user $REPOSITORY_DIR && \
     chown -R user:user $BAZEL_CACHE_DIR
 
@@ -48,3 +50,4 @@ USER user
 WORKDIR $REPOSITORY_DIR
 
 VOLUME [$REPOSITORY_DIR]
+VOLUME [$BAZEL_CACHE_DIR]
