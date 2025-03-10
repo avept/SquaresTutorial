@@ -15,8 +15,20 @@ opencv_lib = [
 LINKOPT = lib_paths + opencv_lib 
 
 cc_library(
+    name = "square_intersection_lib",
+    srcs = ["square.cpp"],
+    hdrs = ["square.h"],
+    copts = ["-I/usr/include/opencv4"],
+    linkopts = LINKOPT,
+    visibility = ["//visibility:public"]
+)
+
+cc_binary(
     name = "square_intersection",
-    srcs = ["square.h", "square.cpp"], 
+    srcs = ["main.cpp"],
+    deps = [
+        "//src:square_intersection_lib"
+    ],
     copts = ["-I/usr/include/opencv4"],
     linkopts = LINKOPT,
     visibility = ["//visibility:public"]
