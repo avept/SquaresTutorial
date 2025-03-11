@@ -22,7 +22,7 @@ The build process is defined in the Dockerfile.
 
 ### **Run the container**
 
-Once the build is complete, run the executable inside Docker:
+Once the build is complete, you can run Docker container:
 ```sh
 docker run -v /workspaces/SquaresTutorial:/workspaces/SquaresTutorial -v /workspaces/.cache:/workspaces/.cache --rm -it --entrypoint /bin/bash squares_intersection
 ```
