@@ -1,15 +1,48 @@
 *** Settings ***
 Library           Process
 Library           OperatingSystem
+Library           utils.Utils    WITH NAME    Utils
+
+Suite Setup      Prepare Test Environment
+Suite Teardown   Clean Up Test Environment
+
+Test Setup       Prepare Test Data
+Test Teardown    Clean Up Output Files
 
 *** Variables ***
 ${REPO_TOP_DIR}             /workspaces/SquaresTutorial
 ${BAZEL_BIN_DIR}            ${REPO_TOP_DIR}/bazel-bin
+${TEST_DIR}                 ${REPO_TOP_DIR}/test_env
 ${PROCESS_INTERSECTIONS}    ${BAZEL_BIN_DIR}/src/square_intersection
-${INPUT_CSV}                ${REPO_TOP_DIR}/robot/input.csv
-${OUTPUT_CSV}               ${REPO_TOP_DIR}/output.csv
-${EXPECTED_CSV}             ${REPO_TOP_DIR}/robot/expected.csv
-${CSV_COMPARISON_SCRIPT}    ${REPO_TOP_DIR}/robot/compare_csv.py
+${INPUT_CSV}                ${TEST_DIR}/input.csv
+${OUTPUT_CSV}               ${TEST_DIR}/output.csv
+${EXPECTED_CSV}             ${TEST_DIR}/expected.csv
+
+*** Keywords ***
+
+Prepare Test Environment
+    [Documentation]    Create test directory and ensure a clean test environment
+    Remove Directory    ${TEST_DIR}    recursive=True    
+    Create Directory    ${TEST_DIR}
+
+Clean Up Test Environment
+    [Documentation]    Remove test directory after all tests are completed
+    Remove Directory    ${TEST_DIR}    recursive=True    
+
+Prepare Test Data
+    [Documentation]    Generate new input.csv and expected.csv before each test
+    Utils.Generate CSV    ${INPUT_CSV}    ${EXPECTED_CSV}
+    Validate Input Data
+
+Validate Input Data
+    [Documentation]    Ensure input.csv exists and is not empty before running the test
+    File Should Exist    ${INPUT_CSV}
+    ${size} =    Get File Size    ${INPUT_CSV}
+    Run Keyword If    ${size} == 0    Fail    Input CSV is empty. Skipping this test.
+
+Clean Up Output Files
+    [Documentation]    Remove the output CSV file after each test
+    Remove File    ${OUTPUT_CSV}
 
 *** Test Cases ***
 
@@ -44,29 +77,20 @@ Invalid Output File Path
     Log    Expected failure due to invalid output file path.
 
 # Test Case 5: Output File Cannot Be Written (Permission issue)
-Permissions denied for create output file
+Permissions Denied for Output File
     [Documentation]    Ensure process fails when the output file cannot be written
-    #${result} =    Run Process    ${PROCESS_INTERSECTIONS}    ${INPUT_CSV}    /workspaces/SquaresTutorial/robot/output.csv    shell=True    stderr=True
-    #Should Not Be Equal As Integers    ${result.rc}    0
-    #Should Contain    ${result.stderr}    Error: Unable to open output file
-    #Log    Expected failure due to invalid permissions in output file.
-    ${rc}  ${out} =  Run and Return RC and Output  ${PROCESS_INTERSECTIONS} ${INPUT_CSV} ${OUTPUT_CSV}
-    Log Many  ${out}
-    Log Many  RC=${rc}
+    Create File    ${OUTPUT_CSV}    Test content
+    Run Process    chmod 400 ${OUTPUT_CSV}    shell=True
+    ${result} =    Run Process    ${PROCESS_INTERSECTIONS}    ${INPUT_CSV}    ${OUTPUT_CSV}    shell=True    stderr=True
+    Should Not Be Equal As Integers    ${result.rc}    0
+    Should Contain    ${result.stderr}    Error: Unable to open output file
+    Run Process    chmod 644 ${OUTPUT_CSV}    shell=True
 
 # Test Case 6: Valid Input & Output (Successful Execution)
 Valid Input Processing
     [Documentation]    Ensure process successfully processes a valid input CSV
     ${result} =    Run Process    ${PROCESS_INTERSECTIONS}    ${INPUT_CSV}    ${OUTPUT_CSV}    shell=True
     Should Be Equal As Integers    ${result.rc}    0
-    File Should Exist    ${INPUT_CSV}
-    ${input_content} =    Get File    ${INPUT_CSV}
-    Log    \n*** Input CSV Content ***\n${input_content}    level=INFO
-    ${compare} =    Run Process    python3    ${CSV_COMPARISON_SCRIPT}    ${EXPECTED_CSV}    ${OUTPUT_CSV}    shell=True
-    Should Be Equal As Integers    ${compare.rc}    0
-    Log    Expected successful processing.
-
-
-# TODO:
-# 1) Test env, create new folder, clean it 
-# 2) Validate input.csv
+    File Should Exist    ${OUTPUT_CSV}
+    ${match} =    Utils.compare_csv    ${EXPECTED_CSV}    ${OUTPUT_CSV}
+    Should Be True    ${match}    Expected and output CSVs should match

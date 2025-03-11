@@ -10,6 +10,11 @@ enum MAGIC_CONSTANTS
     CSV_ARGUMENTS_NUMBER = 6
 };
 
+bool is_empty_or_whitespace(const std::string& str)
+{
+    return str.find_first_not_of(" \t\r\n") == std::string::npos;
+}
+
 int process_intersections(const std::string& input_path, const std::string& output_path) 
 {
     std::ifstream infile(input_path);
@@ -30,12 +35,11 @@ int process_intersections(const std::string& input_path, const std::string& outp
     std::string line;
     while (std::getline(infile, line)) 
     {
-        if (line.empty()) 
+        if (is_empty_or_whitespace(line)) 
         { 
             outfile << "error" << std::endl;
             continue;
         }
-
         std::stringstream ss(line);
         std::vector<int> values;
         std::string token;
@@ -54,7 +58,11 @@ int process_intersections(const std::string& input_path, const std::string& outp
 
         if (values.size() != MAGIC_CONSTANTS::CSV_ARGUMENTS_NUMBER)
         {  
-            outfile << line << ",error" << std::endl;
+            for(auto& it : values)
+            {
+                outfile << it << ",";
+            }
+            outfile << "error" << std::endl;
             continue;
         }
 
@@ -85,8 +93,7 @@ int process_intersections(const std::string& input_path, const std::string& outp
 
 int main(int argc, char* argv[]) 
 {
-    if (argc != MAGIC_CONSTANTS::APP_ARUGMENTS_NUMBER) 
-    {
+    if (argc != MAGIC_CONSTANTS::APP_ARUGMENTS_NUMBER) {
         std::cerr << "Usage: " << argv[0] << " /path/to/input.csv /path/to/output.csv" << std::endl;
         return 1;
     }

@@ -2,6 +2,8 @@ FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG BAZEL_VERSION=6.3.2
+ARG GROUPID=1001
+ARG USERID=1001
 
 RUN apt update && apt install -y \
     wget \
@@ -29,16 +31,14 @@ RUN wget -q https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSIO
 
 RUN pip install --no-cache-dir robotframework robotframework-requests
 
-ENV GROUPID=1001
-ENV USERID=1001
-
-RUN groupadd -g $GROUPID user && \
-    useradd -m -u $USERID -g $GROUPID -s /bin/bash user
+RUN groupadd -g ${GROUPID} user && \
+    useradd -m -u ${USERID} -g ${GROUPID} -s /bin/bash user
 
 ENV USER_DIR=/home/user
 ENV WORKSPACE_DIR=/workspaces
 ENV REPOSITORY_DIR=/workspaces/SquaresTutorial
 ENV BAZEL_CACHE_DIR=$WORKSPACE_DIR/.cache
+ENV PYTHONPATH=$REPOSITORY_DIR/robot
 
 RUN mkdir -m a=rwx -p $REPOSITORY_DIR && \
     mkdir -m a=rwx -p $BAZEL_CACHE_DIR && \
