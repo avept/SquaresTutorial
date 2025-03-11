@@ -1,2 +1,5 @@
 bazel-*
 *.bazel
+MODULE.bazel*
+MODULE.bazel.*
+True

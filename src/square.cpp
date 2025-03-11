@@ -12,7 +12,8 @@ Square::Square(const cv::Point& topLeft, int length) :
 
 bool Square::contains(const cv::Point& p) const 
 {
-    return m_rect.contains(p);
+    return (m_rect.tl().x <= p.x && p.x <= m_rect.tl().x + m_rect.width) &&
+           (m_rect.tl().y <= p.y && p.y <= m_rect.tl().y + m_rect.height);
 }
 
 bool Square::isDiagonalIntersecting(const cv::Point& p1, const cv::Point& p2) const 
@@ -28,5 +29,18 @@ std::pair<cv::Point, cv::Point> Square::getDiagonalPoints() const
 
 bool FigureOperations::intersect(const Square& sq1, const Square& sq2)
 {
-    return (sq1.getRect() & sq2.getRect()).area() > 0;
+    cv::Rect fRect = sq1.getRect();
+    cv::Rect sRect = sq2.getRect();
+
+    // Direct containment check (identical squares)
+    if ((fRect == sRect) && (fRect.height == sRect.height))
+        return true;
+
+    auto [sq1_diag1, sq1_diag2] = sq1.getDiagonalPoints();
+    auto [sq2_diag1, sq2_diag2] = sq2.getDiagonalPoints();
+
+    return sq1.isDiagonalIntersecting(sq2.getRect().tl(), sq2_diag1) ||
+           sq1.isDiagonalIntersecting(sq2_diag2, cv::Point(sq2_diag1.x, sq2.getRect().tl().y)) ||
+           sq2.isDiagonalIntersecting(sq1.getRect().tl(), sq1_diag1) ||
+           sq2.isDiagonalIntersecting(sq1_diag2, cv::Point(sq1_diag1.x, sq1.getRect().tl().y));
 }

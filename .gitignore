@@ -1,2 +1,8 @@
 bazel-*
 *.bazel
+MODULE.bazel*
+MODULE.bazel.*
+*.html
+*.xml
+*pycache*
+True

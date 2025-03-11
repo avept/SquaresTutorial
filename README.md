@@ -15,18 +15,23 @@ The build process is defined in the Dockerfile.
 
 Once the build is complete, run the executable inside Docker:
 ```sh
-docker run -v /workspaces/SquareTutorial:/workspaces/SquareTutorial -it --entrypoint /bin/bash squares_intersection
+docker run -v /workspaces/SquaresTutorial:/workspaces/SquaresTutorial --rm -it --entrypoint /bin/bash squares_intersection
 ```
 
 ## **Build and run the project**
 
 Once we are inside the container, we can build the project itself:
 ```sh
-bazel build --enable_workspace=true //...
+bazel build //...
 ```
 
 and run:
 
 ```sh
-bazel run --enable_workspace=true //tests:square_intersection_tests 
+bazel run //tests:square_intersection_tests 
+```
+
+Moreover, you can run automated tests:
+```sh
+robot robot/test_process_intersections.robot
 ```
