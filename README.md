@@ -15,7 +15,7 @@ To build the project inside a **Docker container**, run the following command:
 ```sh
 docker build --build-arg USERID=YOUR_USER_ID --build-arg GROUPID=YOUR_GROUP_ID -t squares_intersection .
 ```
-Please write your USERID and GROUPID instead of **YOUR_USER_ID** and **YOUR_GROUP_ID**. 
+Replace ```YOUR_USER_ID``` and ```YOUR_GROUP_ID``` with your actual user and group IDs.
 
 This will install dependencies, fetch Bazel packages.
 The build process is defined in the Dockerfile.
